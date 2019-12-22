@@ -1,0 +1,13 @@
+.btn-success:not(:disabled):not(.disabled):active:focus,
+.btn-success:focus, .btn-success.focus
+{
+    box-shadow:none;
+    outline: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:focus, .btn-primary.focus
+{
+    outline: none;
+    box-shadow:none;
+}

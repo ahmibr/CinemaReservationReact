@@ -1,12 +1,61 @@
-import React from 'react';
+import React, { Component } from "react";
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import { CinemaSeats } from './components/cinemaSeats';
+import { HomePage } from './components/homepage';
+import { LoginPage } from './components/login';
+import { Screenings } from './components/screenings';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(
+//     <CinemaSeats/>,
+//     document.getElementById('root')
+//   );
+class App extends Component {
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  constructor(props) {
+    super(props);
+  }
+
+  Home() {
+    return <HomePage />
+  }
+
+  Login() {
+    return <LoginPage />;
+  }
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <nav>
+            <Link to="/">Home</Link>
+          </nav>
+          <Switch>
+            <Route path="/reserve/:screeningID" component={CinemaSeats} />
+            <Route path="/movie/:movieID" component={Screenings} />
+            <Route path="/homepage">
+              {this.Home()}
+            </Route>
+            <Route path="/">
+              {this.Login()}
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
