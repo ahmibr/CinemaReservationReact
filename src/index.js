@@ -13,6 +13,7 @@ import { CinemaSeats } from './components/cinemaSeats';
 import { HomePage } from './components/homepage';
 import { LoginPage } from './components/login';
 import { Screenings } from './components/screenings';
+import { NavBar } from './components/navbar';
 
 // ReactDOM.render(
 //     <CinemaSeats/>,
@@ -36,9 +37,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <nav>
-            <Link to="/">Home</Link>
-          </nav>
+          <NavBar />
           <Switch>
             <Route path="/reserve/:screeningID" component={CinemaSeats} />
             <Route path="/movie/:movieID" component={Screenings} />

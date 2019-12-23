@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
+import './login.css'
 import {
     BrowserRouter as Router,
     Switch,
@@ -33,7 +34,7 @@ export class LoginPage extends Component {
             dataType: 'json',
             cache: false,
             success: function (data) {
-                console.log(data);
+                console.log("Hello" + data);
                 if (data == true) {
                     this.setState({ isLoggedIn: true })
                 }
@@ -88,16 +89,16 @@ export class LoginPage extends Component {
         }
         else
             return (
-                <form>
+                <form className = "mycenter">
                     <div className="form-group">
-                        <label>Username</label>
+                        <label className = "mycenter">Username</label>
                         <input required type="text" className="form-control" value={this.state.usernameValue} onChange={this.handleUsernameChange} placeholder="Enter Username"></input>
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label className = "mycenter">Password</label>
                         <input required type="password" className="form-control" value={this.state.passwordValue} onChange={this.handlePasswordChange} placeholder="Password"></input>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Login</button>
+                    <button type="submit" className="btn btn-primary" onClick={this.handleSubmit} style={{marginLeft: "4em"}}>Login</button>
                 </form>
             );
     }
