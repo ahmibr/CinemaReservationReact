@@ -2,7 +2,7 @@
 include("db.php");
 $conn = openConnection();
 
-if (isset($_SESSION('username') && $_SESSION ['type'] == "Admin" && isset ($_GET ['movieID']) && isset($_GET['screenNumber'])) {
+if (isset($_SESSION['username']) && $_SESSION ['type'] == "Admin" && isset ($_GET ['movieID']) && isset($_GET['screenNumber'])) {
    $movieID = $_GET['movieID'];
    $screenNumber = $_GET['screenNumber'];
 

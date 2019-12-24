@@ -11,7 +11,7 @@ import {
 export class NavBar extends Component {
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: true, signedOut: false };
+        this.state = { isLoggedIn: null, signedOut: false };
         this.onPressLogout = this.onPressLogout.bind(this);
     }
 
@@ -52,9 +52,11 @@ export class NavBar extends Component {
     }
 
     render() {
-        this.checkLogIn();
+        if(!this.state.isLoggedIn){
+            this.checkLogIn();
+        }
         if (this.state.signedOut) {
-            this.setState({ signedOut: false });
+            this.setState({ signedOut: false,isLoggedIn: null});
             return <Redirect to='/' />;
         }
 
@@ -65,7 +67,7 @@ export class NavBar extends Component {
         }
 
         return (<nav className="navbar navbar-dark bg-primary">
-            <a class="navbar-brand" href="/">Homepage</a>
+            <a className="navbar-brand" href="/">Homepage</a>
             {button}
         </nav>)
     }

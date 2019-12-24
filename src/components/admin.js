@@ -19,16 +19,20 @@ export class AdminPage extends Component {
         this.state = {
             moviesIsLoading: true, moviesList: [], selectedMovie: null,
             screensIsLoading: true, screensList: [], selectedScreen: null,
+            addedMovieName: "",
             isAdmin: null
         }
 
         this.onMovieSelect = this.onMovieSelect.bind(this);
         this.onScreenSelect = this.onScreenSelect.bind(this);
         this.onClickSubmit = this.onClickSubmit.bind(this);
+        this.onSubmitMovie = this.onSubmitMovie.bind(this);
+        this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
 
         this.checkAdmin();
         this.getMovies();
         this.getScreens();
+
     }
 
     checkAdmin() {
@@ -111,10 +115,10 @@ export class AdminPage extends Component {
             success: function (data) {
                 console.log(data);
                 if (data == true) {
-                    alert("Screening created successfully!")
+                    alert("Screening added successfully!")
                 }
                 else {
-                    alert("Screening couldn't be created")
+                    alert("Screening couldn't be added")
                 }
             }.bind(this),
             error: function (xhr, status, err) {
@@ -122,6 +126,43 @@ export class AdminPage extends Component {
             }.bind(this)
         });
     }
+
+    onSubmitMovie() {
+        if (this.state.addedMovieName.length == 0) {
+            alert("Select a movie name");
+            return;
+        }
+
+        const url = "/cinema/addmovie.php";
+        $.ajax({
+            method: "GET",
+            url: url,
+            cache: false,
+            data: { movieName: this.state.addedMovieName},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data == true) {
+                    alert("Movie added successfully!")
+                    this.getMovies();
+                    this.getScreens();
+                }
+                else {
+                    alert("Movie couldn't be added")
+                }
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    handleMovieNameChange(e) {
+        this.setState({ addedMovieName: e.target.value });
+    }
+
+
+
     render() {
         if (this.state.isAdmin) {
             let moviesDropDownList = null;
@@ -148,13 +189,20 @@ export class AdminPage extends Component {
                     onSelect={(e) => this.onScreenSelect(e)}
                 />;
             return (<div className='col-md-12'>
+                <h2>Add Screening</h2>
                 <b>Movie</b>
                 {moviesDropDownList}
                 <b>Screen</b>
                 {screensDropDownList}
                 {/* <b>Time</b> */}
                 <br></br>
-                <button className='btn btn-outline-success btn-lg' onClick={this.onClickSubmit}>Create Screening</button>
+                <button className='btn btn-outline-success btn-lg' onClick={this.onClickSubmit}>Add Screening</button>
+                <br></br><br></br>
+                <h2>Add Movie</h2>
+                <b>Movie Name</b>
+                <input required type="text" onChange={this.handleMovieNameChange} className="form-control" style={{ width: "300px" }} placeholder="Movie Name"></input>
+                <br></br>
+                <button className='btn btn-outline-success btn-lg' onClick={this.onSubmitMovie}>Add Movie</button>
             </div>
             )
         }
