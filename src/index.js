@@ -14,6 +14,7 @@ import { HomePage } from './components/homepage';
 import { LoginPage } from './components/login';
 import { Screenings } from './components/screenings';
 import { NavBar } from './components/navbar';
+import { AdminPage } from "./components/admin";
 
 // ReactDOM.render(
 //     <CinemaSeats/>,
@@ -44,6 +45,7 @@ class App extends Component {
             <Route path="/homepage">
               {this.Home()}
             </Route>
+            <Route path="/admin" component={AdminPage} />
             <Route path="/">
               {this.Login()}
             </Route>

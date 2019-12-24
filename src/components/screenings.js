@@ -38,6 +38,9 @@ export class Screenings extends Component {
     }
 
     render() {
+        if(this.state.screeningList.length == 0)
+            return <b>No screenings found</b>;
+            
         return (<table className="table">
             <tbody>
                 {this.state.screeningList.map((screen, screenIndex) => {

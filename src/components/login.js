@@ -16,7 +16,8 @@ export class LoginPage extends Component {
         this.state = {
             usernameValue: "",
             passwordValue: "",
-            isLoggedIn: false
+            isLoggedIn: false,
+            userType: 'Guest'
         };
 
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -35,8 +36,8 @@ export class LoginPage extends Component {
             cache: false,
             success: function (data) {
                 console.log("Hello" + data);
-                if (data == true) {
-                    this.setState({ isLoggedIn: true })
+                if (data.status == 'true') {
+                    this.setState({ isLoggedIn: true,  userType: data.type})
                 }
             }.bind(this),
             error: function (xhr, status, err) {
@@ -67,11 +68,9 @@ export class LoginPage extends Component {
                 cache: false,
                 success: function (data) {
                     console.log(data);
-                    if (data == true)
-                        {
-                            alert("login successfully");
-                            this.setState({ isLoggedIn: true })
-                        }
+                    if (data.status == 'true') {
+                        this.setState({ isLoggedIn: true,userType: data.type })
+                    }
                     else
                         alert("Invalid username or password");
                 }.bind(this),
@@ -85,20 +84,23 @@ export class LoginPage extends Component {
 
     render() {
         if (this.state.isLoggedIn) {
-            return <Redirect to='/homepage' />
+            if(this.state.userType == 'Customer')
+                return <Redirect to='/homepage' />
+            else if(this.state.userType == "Admin")
+                return <Redirect to='/admin' />
         }
         else
             return (
-                <form className = "mycenter">
+                <form className="mycenter">
                     <div className="form-group">
-                        <label className = "mycenter">Username</label>
+                        <label className="mycenter">Username</label>
                         <input required type="text" className="form-control" value={this.state.usernameValue} onChange={this.handleUsernameChange} placeholder="Enter Username"></input>
                     </div>
                     <div className="form-group">
-                        <label className = "mycenter">Password</label>
+                        <label className="mycenter">Password</label>
                         <input required type="password" className="form-control" value={this.state.passwordValue} onChange={this.handlePasswordChange} placeholder="Password"></input>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={this.handleSubmit} style={{marginLeft: "4em"}}>Login</button>
+                    <button type="submit" className="btn btn-primary" onClick={this.handleSubmit} style={{ marginLeft: "4em" }}>Login</button>
                 </form>
             );
     }

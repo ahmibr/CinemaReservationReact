@@ -21,9 +21,10 @@ export class NavBar extends Component {
             method: "GET",
             url: url,
             cache: false,
+            dataType: 'json',
             success: function (data) {
-                console.log("???" + data);
-                if (data == 'true') {
+                if (data.status == 'true') {
+                    
                     this.setState({ isLoggedIn: true })
                 }
                 else

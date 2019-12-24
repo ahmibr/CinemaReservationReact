@@ -2,10 +2,14 @@
 include("db.php");
 $conn = openConnection();
 
+$obj = new stdClass();
 if (isset($_SESSION['username'])) {
-   echo json_encode(true);
+   $obj->status = 'true';
+   $obj->type = $_SESSION['type'];
 }
 else{
-   echo json_encode(false);
+   $obj->status = 'false';
 }
+
+echo json_encode($obj);
 closeConnection($conn);

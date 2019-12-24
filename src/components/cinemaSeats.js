@@ -193,7 +193,7 @@ export class CinemaSeats extends Component {
             <div className='container mt-5'>
                 <div className='row'>
                     <div className='col-md-12'>
-                        <h1>Screen {this.screenNumber}</h1>
+                        <h1 style={{textAlign: "center"}}>Screen {this.screenNumber}</h1>
                         <table className="table">
                             <tbody>
                                 {this.state.seatsGrid.map((row, rowIndex) => {
