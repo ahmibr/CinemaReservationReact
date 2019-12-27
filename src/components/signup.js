@@ -10,21 +10,22 @@ import {
     Redirect
 } from "react-router-dom";
 
-export class LoginPage extends Component {
+export class SignUpPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usernameValue: "",
             passwordValue: "",
+            emailValue: "",
             isLoggedIn: false,
-            userType: 'Guest',
-            clickedSignUp: false
+            signedUp: false
         };
 
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.clickSignUp = this.clickSignUp.bind(this);
 
         this.checkLogin();
     }
@@ -51,6 +52,10 @@ export class LoginPage extends Component {
         this.setState({ usernameValue: e.target.value });
     }
 
+    handleEmailChange(e) {
+        this.setState({ emailValue: e.target.value });
+    }
+
     handlePasswordChange(e) {
         this.setState({ passwordValue: e.target.value });
     }
@@ -60,21 +65,24 @@ export class LoginPage extends Component {
             alert("password should be more than 8 characters");
         else if (this.state.usernameValue.length == 0)
             alert("Enter valid username");
+        else if (this.state.emailValue.length == 0)
+            alert("Enter valid email");
         else {
-            const url = "/cinema/login.php"
+            const url = "/cinema/signup.php"
             $.ajax({
                 method: "POST",
                 url: url,
-                data: { username: this.state.usernameValue, password: this.state.passwordValue },
-                dataType: 'json',
+                data: { username: this.state.usernameValue, email: this.state.emailValue, password: this.state.passwordValue },
+                // dataType: 'json',
                 cache: false,
                 success: function (data) {
                     console.log(data);
-                    if (data.status == 'true') {
-                        this.setState({ isLoggedIn: true, userType: data.type })
+                    if (data == 'true') {
+                        alert("Sign up successfully, please login");
+                        this.setState({signedUp: true});
                     }
                     else
-                        alert("Invalid username or password");
+                        alert("Invalid sign up");
                 }.bind(this),
                 error: function (xhr, status, err) {
                     console.error(this.props.url, status, err.toString());
@@ -84,40 +92,34 @@ export class LoginPage extends Component {
         e.preventDefault()
     }
 
-    clickSignUp() {
-        this.setState({ clickedSignUp: true });
-    }
-
     render() {
+        if(this.state.signedUp){
+            return <Redirect to='/' />
+        }
         if (this.state.isLoggedIn) {
             if (this.state.userType == 'Customer')
                 return <Redirect to='/homepage' />
             else if (this.state.userType == "Admin")
                 return <Redirect to='/admin' />
         }
-        else if (this.state.clickedSignUp)
-            return <Redirect to='/signup' />
-        else return (
-            <div>
+        else
+            return (
                 <form className="mycenter">
                     <div className="form-group">
                         <label className="mycenter">Username</label>
                         <input required type="text" className="form-control" value={this.state.usernameValue} onChange={this.handleUsernameChange} placeholder="Enter Username"></input>
                     </div>
                     <div className="form-group">
+                        <label className="mycenter">Email</label>
+                        <input required type="email" className="form-control" value={this.state.emailValue} onChange={this.handleEmailChange} placeholder="Enter Mail"></input>
+                    </div>
+                    <div className="form-group">
                         <label className="mycenter">Password</label>
                         <input required type="password" className="form-control" value={this.state.passwordValue} onChange={this.handlePasswordChange} placeholder="Password"></input>
                     </div>
-                    <div>
-                        <button type="submit" className="btn btn-primary" onClick={this.handleSubmit} style={{ marginLeft: "4em" }}>Login</button>
-                        <br></br>
-                        <br></br>
-                    </div>
+                    <button type="submit" className="btn btn-primary" onClick={this.handleSubmit} style={{ marginLeft: "4em" }}>SignUp</button>
                 </form>
-
-                <button href={"/signup"} onClick={this.clickSignUp} className="btn btn-warning">No account? SignUp</button>
-            </div>
-        );
+            );
     }
 
 }
